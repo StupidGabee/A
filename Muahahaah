@@ -1,17 +1,6 @@
--- Add function with error checking
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local remote = ReplicatedStorage.BillboardGui.EnableStatisticsGui
 
--- Try to find the remote
-local success, remote = pcall(function()
-    return ReplicatedStorage.BillboardGui.EnableStatisticsGui
-end)
-
-if success and remote then
-    -- Create the Add function
-    function _G.Add(path)
-        remote:FireServer(path)
-        print("Sent:", path)
-    end
-    print("✅ Add function loaded successfully!")
-else
-    print("❌
+_G.Add = function(path)
+    remote:FireServer(path)
+end

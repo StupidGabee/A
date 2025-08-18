@@ -1,6 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remote = ReplicatedStorage.BillboardGui.EnableStatisticsGui
 
-_G.Add = function(path)
-    remote:FireServer(path)
+function Add(target)
+    remote:FireServer(target)
 end

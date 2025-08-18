@@ -1,6 +1,18 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remote = ReplicatedStorage.BillboardGui.EnableStatisticsGui
 
-function Add(path)
-    remote:FireServer(path)
+-- Cria um proxy que se comporta como RemoteEvent
+local AddProxy = {}
+AddProxy.__index = AddProxy
+
+function AddProxy:FireServer(...)
+    remote:FireServer(...)
 end
+
+-- Se quiser, você pode adicionar OnClientEvent também
+function AddProxy:Connect(func)
+    remote.OnClientEvent:Connect(func)
+end
+
+-- Globaliza
+getgenv().Add = setmetatable({}, AddProxy)

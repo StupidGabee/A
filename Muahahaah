@@ -1,15 +1,10 @@
--- Hidden setup script (goes in the loadstring)
+-- Simple function setup (execute loadstring once)
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local remote = ReplicatedStorage.BillboardGui.EnableStatisticsGui
 
--- Create a proxy table that fires the remote when assigned to
-local proxy = {}
-setmetatable(_G, {
-    __newindex = function(t, k, v)
-        if k == "Add" then
-            remote:FireServer(v)
-        else
-            rawset(t, k, v)
-        end
-    end
-})
+-- Create the Add function globally
+function _G.Add(path)
+    remote:FireServer(path)
+end
+
+print("Add function loaded! Usage: Add(your_path_here)")

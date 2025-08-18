@@ -1,0 +1,335 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TweenService = game:GetService("TweenService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "NametagGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local nametagButton = Instance.new("TextButton")
+nametagButton.Name = "NametagButton"
+nametagButton.Size = UDim2.new(0, 120, 0, 40)
+nametagButton.Position = UDim2.new(0, 20, 0.5, -20)
+nametagButton.AnchorPoint = Vector2.new(0, 0.5)
+nametagButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+nametagButton.BorderSizePixel = 0
+nametagButton.Text = "Nametag"
+nametagButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+nametagButton.TextSize = 16
+nametagButton.Font = Enum.Font.GothamBold
+nametagButton.Parent = screenGui
+
+local nametagButtonCorner = Instance.new("UICorner")
+nametagButtonCorner.CornerRadius = UDim.new(0, 8)
+nametagButtonCorner.Parent = nametagButton
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 300, 0, 280)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -140)
+mainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+mainFrame.BorderSizePixel = 0
+mainFrame.Visible = false
+mainFrame.Parent = screenGui
+
+local mainFrameCorner = Instance.new("UICorner")
+mainFrameCorner.CornerRadius = UDim.new(0, 12)
+mainFrameCorner.Parent = mainFrame
+
+local mainLayout = Instance.new("UIListLayout")
+mainLayout.FillDirection = Enum.FillDirection.Vertical
+mainLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+mainLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+mainLayout.SortOrder = Enum.SortOrder.LayoutOrder
+mainLayout.Padding = UDim.new(0, 8)
+mainLayout.Parent = mainFrame
+
+local padding = Instance.new("UIPadding")
+padding.PaddingTop = UDim.new(0, 50)
+padding.PaddingBottom = UDim.new(0, 20)
+padding.PaddingLeft = UDim.new(0, 20)
+padding.PaddingRight = UDim.new(0, 20)
+padding.Parent = mainFrame
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "TitleLabel"
+titleLabel.Size = UDim2.new(1, 0, 0, 40)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Nametag Settings"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextSize = 18
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.Parent = mainFrame
+
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+closeButton.BorderSizePixel = 0
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextSize = 14
+closeButton.Font = Enum.Font.GothamBold
+closeButton.Parent = mainFrame
+
+local closeButtonCorner = Instance.new("UICorner")
+closeButtonCorner.CornerRadius = UDim.new(0, 6)
+closeButtonCorner.Parent = closeButton
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "TitleLabel"
+titleLabel.Size = UDim2.new(1, 0, 0, 40)
+titleLabel.Position = UDim2.new(0, 0, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "Nametag Settings"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextSize = 18
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.Parent = mainFrame
+
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0, 5)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+closeButton.BorderSizePixel = 0
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextSize = 14
+closeButton.Font = Enum.Font.GothamBold
+closeButton.Parent = mainFrame
+
+local closeButtonCorner = Instance.new("UICorner")
+closeButtonCorner.CornerRadius = UDim.new(0, 6)
+closeButtonCorner.Parent = closeButton
+
+local nickTextbox = Instance.new("TextBox")
+nickTextbox.Name = "NickTextbox"
+nickTextbox.Size = UDim2.new(1, 0, 0, 35)
+nickTextbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+nickTextbox.BorderSizePixel = 0
+nickTextbox.PlaceholderText = "Enter your nickname..."
+nickTextbox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+nickTextbox.Text = ""
+nickTextbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+nickTextbox.TextSize = 14
+nickTextbox.Font = Enum.Font.Gotham
+nickTextbox.LayoutOrder = 1
+nickTextbox.Parent = mainFrame
+
+local nickTextboxCorner = Instance.new("UICorner")
+nickTextboxCorner.CornerRadius = UDim.new(0, 6)
+nickTextboxCorner.Parent = nickTextbox
+
+local param1Textbox = Instance.new("TextBox")
+param1Textbox.Name = "Param1Textbox"
+param1Textbox.Size = UDim2.new(1, 0, 0, 35)
+param1Textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+param1Textbox.BorderSizePixel = 0
+param1Textbox.PlaceholderText = "Parameter 1 (Admin only)"
+param1Textbox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+param1Textbox.Text = ""
+param1Textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+param1Textbox.TextSize = 14
+param1Textbox.Font = Enum.Font.Gotham
+param1Textbox.LayoutOrder = 2
+param1Textbox.Visible = false
+param1Textbox.Parent = mainFrame
+
+local param1TextboxCorner = Instance.new("UICorner")
+param1TextboxCorner.CornerRadius = UDim.new(0, 6)
+param1TextboxCorner.Parent = param1Textbox
+
+local param4Textbox = Instance.new("TextBox")
+param4Textbox.Name = "Param4Textbox"
+param4Textbox.Size = UDim2.new(1, 0, 0, 35)
+param4Textbox.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+param4Textbox.BorderSizePixel = 0
+param4Textbox.PlaceholderText = "Parameter 4 (Admin only)"
+param4Textbox.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+param4Textbox.Text = ""
+param4Textbox.TextColor3 = Color3.fromRGB(255, 255, 255)
+param4Textbox.TextSize = 14
+param4Textbox.Font = Enum.Font.Gotham
+param4Textbox.LayoutOrder = 3
+param4Textbox.Visible = false
+param4Textbox.Parent = mainFrame
+
+local param4TextboxCorner = Instance.new("UICorner")
+param4TextboxCorner.CornerRadius = UDim.new(0, 6)
+param4TextboxCorner.Parent = param4Textbox
+
+local buttonContainer = Instance.new("Frame")
+buttonContainer.Name = "ButtonContainer"
+buttonContainer.Size = UDim2.new(1, 0, 0, 35)
+buttonContainer.BackgroundTransparency = 1
+buttonContainer.LayoutOrder = 4
+buttonContainer.Parent = mainFrame
+
+local buttonLayout = Instance.new("UIListLayout")
+buttonLayout.FillDirection = Enum.FillDirection.Horizontal
+buttonLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+buttonLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+buttonLayout.SortOrder = Enum.SortOrder.LayoutOrder
+buttonLayout.Padding = UDim.new(0, 10)
+buttonLayout.Parent = buttonContainer
+
+local setNickButton = Instance.new("TextButton")
+setNickButton.Name = "SetNickButton"
+setNickButton.Size = UDim2.new(0, 120, 0, 35)
+setNickButton.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
+setNickButton.BorderSizePixel = 0
+setNickButton.Text = "Set Nick"
+setNickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+setNickButton.TextSize = 14
+setNickButton.Font = Enum.Font.GothamBold
+setNickButton.LayoutOrder = 1
+setNickButton.Parent = buttonContainer
+
+local setNickButtonCorner = Instance.new("UICorner")
+setNickButtonCorner.CornerRadius = UDim.new(0, 6)
+setNickButtonCorner.Parent = setNickButton
+
+local addNametagButton = Instance.new("TextButton")
+addNametagButton.Name = "AddNametagButton"
+addNametagButton.Size = UDim2.new(0, 120, 0, 35)
+addNametagButton.BackgroundColor3 = Color3.fromRGB(85, 85, 255)
+addNametagButton.BorderSizePixel = 0
+addNametagButton.Text = "Add Nametag"
+addNametagButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+addNametagButton.TextSize = 14
+addNametagButton.Font = Enum.Font.GothamBold
+addNametagButton.LayoutOrder = 2
+addNametagButton.Parent = buttonContainer
+
+local addNametagButtonCorner = Instance.new("UICorner")
+addNametagButtonCorner.CornerRadius = UDim.new(0, 6)
+addNametagButtonCorner.Parent = addNametagButton
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Name = "StatusLabel"
+statusLabel.Size = UDim2.new(1, 0, 0, 25)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Text = ""
+statusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+statusLabel.TextSize = 12
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.LayoutOrder = 5
+statusLabel.Parent = mainFrame
+
+local function showStatus(message, color)
+    statusLabel.Text = message
+    statusLabel.TextColor3 = color
+    wait(3)
+    statusLabel.Text = ""
+end
+
+local function toggleGui()
+    local targetTransparency = mainFrame.Visible and 1 or 0
+    local targetVisible = not mainFrame.Visible
+    
+    if targetVisible then
+        mainFrame.Visible = true
+        mainFrame.BackgroundTransparency = 1
+        for _, child in pairs(mainFrame:GetDescendants()) do
+            if child:IsA("GuiObject") then
+                child.BackgroundTransparency = 1
+                if child:IsA("TextLabel") or child:IsA("TextButton") or child:IsA("TextBox") then
+                    child.TextTransparency = 1
+                end
+            end
+        end
+    end
+    
+    local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
+    
+    local frameTween = TweenService:Create(mainFrame, tweenInfo, {BackgroundTransparency = targetTransparency})
+    frameTween:Play()
+    
+    for _, child in pairs(mainFrame:GetDescendants()) do
+        if child:IsA("GuiObject") then
+            local childTween = TweenService:Create(child, tweenInfo, {BackgroundTransparency = targetTransparency})
+            childTween:Play()
+            
+            if child:IsA("TextLabel") or child:IsA("TextButton") or child:IsA("TextBox") then
+                local textTween = TweenService:Create(child, tweenInfo, {TextTransparency = targetTransparency})
+                textTween:Play()
+            end
+        end
+    end
+    
+    if not targetVisible then
+        frameTween.Completed:Connect(function()
+            mainFrame.Visible = false
+        end)
+    end
+end
+
+nametagButton.MouseButton1Click:Connect(toggleGui)
+closeButton.MouseButton1Click:Connect(toggleGui)
+
+local isAdmin = player.Name == "Bolinho54671"
+if isAdmin then
+    param1Textbox.Visible = true
+    param4Textbox.Visible = true
+    titleLabel.Text = "Nametag Settings (Admin)"
+end
+
+addNametagButton.MouseButton1Click:Connect(function()
+    local EnableStatisticsGui = ReplicatedStorage.BillboardGui.EnableStatisticsGui
+    EnableStatisticsGui:FireServer(ReplicatedStorage.BillboardGui.StatisticsGui)
+    showStatus("Nametag enabled!", Color3.fromRGB(85, 255, 85))
+end)
+
+setNickButton.MouseButton1Click:Connect(function()
+    local nickname = nickTextbox.Text
+    local param1 = isAdmin and param1Textbox.Text or ""
+    local param4 = isAdmin and param4Textbox.Text or ""
+    
+    if nickname == "" then
+        showStatus("Please enter a nickname!", Color3.fromRGB(255, 85, 85))
+        return
+    end
+    
+    local blockedNames = {"Lovely", "AbsolutelyLoveAble", "Solven", "SolvenLord"}
+    local isBlocked = false
+    
+    if not isAdmin then
+        for _, blockedName in pairs(blockedNames) do
+            if nickname == blockedName then
+                isBlocked = true
+                break
+            end
+        end
+    end
+    
+    if isBlocked then
+        showStatus("This nickname is blocked!", Color3.fromRGB(255, 85, 85))
+        return
+    end
+    
+    local InputStatisticsGui = ReplicatedStorage.BillboardGui.InputStatisticsGui
+    local StatisticsGui = player.Character.Head.StatisticsGui
+    
+    InputStatisticsGui:FireServer(StatisticsGui, param1, nickname, param4)
+    
+    local statusText = "Nickname set to: " .. nickname
+    if isAdmin and (param1 ~= "" or param4 ~= "") then
+        statusText = statusText .. " (with admin params)"
+    end
+    
+    showStatus(statusText, Color3.fromRGB(85, 255, 85))
+end)
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Escape and mainFrame.Visible then
+        toggleGui()
+    end
+end)

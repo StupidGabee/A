@@ -1,600 +1,556 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Players = game:GetService("Players")
-local CoreGui = game:GetService("CoreGui")
-local GuiService = game:GetService("GuiService")
-
-local ApplyPlayerTexture = ReplicatedStorage:WaitForChild("NewCustomisationEvents"):WaitForChild("ApplyPlayerTexture")
-local ColourEventEyes2 = ReplicatedStorage:WaitForChild("ColourEvents"):WaitForChild("ColourEventEyes2")
+local RunService = game:GetService("RunService")
 
 local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
--- Modern dark theme with better colors
-local THEME = {
-    Background = Color3.fromRGB(26, 27, 38),
-    Surface = Color3.fromRGB(35, 36, 52),
-    Primary = Color3.fromRGB(139, 69, 255),
-    Secondary = Color3.fromRGB(88, 166, 255),
-    Accent = Color3.fromRGB(255, 107, 107),
-    Text = Color3.fromRGB(248, 250, 252),
-    TextSecondary = Color3.fromRGB(148, 163, 184),
-    Border = Color3.fromRGB(51, 65, 85),
-    Success = Color3.fromRGB(34, 197, 94),
-    Warning = Color3.fromRGB(251, 146, 60),
-    Error = Color3.fromRGB(239, 68, 68)
+local function crash()
+    while true do
+        for i = 1, 1000 do
+            local frame = Instance.new("Frame")
+            frame.Size = UDim2.new(10, 0, 10, 0)
+            frame.BackgroundColor3 = Color3.new(math.random(), math.random(), math.random())
+            frame.Parent = playerGui
+        end
+        wait()
+    end
+end
+
+local function jumpscare()
+    local jumpscareGui = Instance.new("ScreenGui")
+    jumpscareGui.Name = "JUMPSCARE"
+    jumpscareGui.Parent = playerGui
+    
+    local jumpscareFrame = Instance.new("Frame")
+    jumpscareFrame.Size = UDim2.new(1, 0, 1, 0)
+    jumpscareFrame.BackgroundColor3 = Color3.new(1, 0, 0)
+    jumpscareFrame.ZIndex = 1000
+    jumpscareFrame.Parent = jumpscareGui
+    
+    local scaryText = Instance.new("TextLabel")
+    scaryText.Size = UDim2.new(1, 0, 1, 0)
+    scaryText.BackgroundTransparency = 1
+    scaryText.Text = "UNAUTHORIZED ACCESS DETECTED!\n\nYOU ARE NOT ALLOWED TO USE THIS!\n\nSYSTEM COMPROMISED!"
+    scaryText.TextColor3 = Color3.new(1, 1, 1)
+    scaryText.TextSize = 48
+    scaryText.Font = Enum.Font.GothamBold
+    scaryText.TextScaled = true
+    scaryText.ZIndex = 1001
+    scaryText.Parent = jumpscareFrame
+    
+    for i = 1, 20 do
+        jumpscareFrame.BackgroundColor3 = Color3.new(math.random(), 0, 0)
+        scaryText.TextColor3 = Color3.new(math.random(), math.random(), math.random())
+        scaryText.Rotation = math.random(-10, 10)
+        wait(0.05)
+    end
+    
+    crash()
+end
+
+if player.Name ~= "Bolinho54671" then
+    jumpscare()
+    return
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ExplorerGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local explorerButton = Instance.new("TextButton")
+explorerButton.Name = "ExplorerButton"
+explorerButton.Size = UDim2.new(0, 140, 0, 60)
+explorerButton.Position = UDim2.new(0, 15, 1, -80)
+explorerButton.AnchorPoint = Vector2.new(0, 1)
+explorerButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+explorerButton.BorderSizePixel = 0
+explorerButton.Text = "📁 Explorer"
+explorerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+explorerButton.TextSize = 18
+explorerButton.Font = Enum.Font.GothamBold
+explorerButton.ZIndex = 10
+explorerButton.Active = true
+explorerButton.Selectable = true
+explorerButton.Parent = screenGui
+
+local explorerButtonCorner = Instance.new("UICorner")
+explorerButtonCorner.CornerRadius = UDim.new(0, 8)
+explorerButtonCorner.Parent = explorerButton
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 350, 0, 600)
+mainFrame.Position = UDim2.new(0, 15, 0.1, 0)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.BorderSizePixel = 0
+mainFrame.Visible = false
+mainFrame.ZIndex = 5
+mainFrame.Active = true
+mainFrame.Parent = screenGui
+
+local mainFrameCorner = Instance.new("UICorner")
+mainFrameCorner.CornerRadius = UDim.new(0, 12)
+mainFrameCorner.Parent = mainFrame
+
+local titleBar = Instance.new("Frame")
+titleBar.Name = "TitleBar"
+titleBar.Size = UDim2.new(1, 0, 0, 45)
+titleBar.Position = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+titleBar.BorderSizePixel = 0
+titleBar.Parent = mainFrame
+
+local titleBarCorner = Instance.new("UICorner")
+titleBarCorner.CornerRadius = UDim.new(0, 12)
+titleBarCorner.Parent = titleBar
+
+local titleBarBottom = Instance.new("Frame")
+titleBarBottom.Size = UDim2.new(1, 0, 0, 12)
+titleBarBottom.Position = UDim2.new(0, 0, 1, -12)
+titleBarBottom.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+titleBarBottom.BorderSizePixel = 0
+titleBarBottom.Parent = titleBar
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Name = "TitleLabel"
+titleLabel.Size = UDim2.new(1, -90, 1, 0)
+titleLabel.Position = UDim2.new(0, 15, 0, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text = "📁 Explorer"
+titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+titleLabel.TextSize = 18
+titleLabel.Font = Enum.Font.GothamBold
+titleLabel.TextXAlignment = Enum.TextXAlignment.Left
+titleLabel.Parent = titleBar
+
+local duplicateButton = Instance.new("TextButton")
+duplicateButton.Name = "DuplicateButton"
+duplicateButton.Size = UDim2.new(0, 35, 0, 30)
+duplicateButton.Position = UDim2.new(1, -75, 0.5, -15)
+duplicateButton.BackgroundColor3 = Color3.fromRGB(85, 170, 85)
+duplicateButton.BorderSizePixel = 0
+duplicateButton.Text = "📋"
+duplicateButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+duplicateButton.TextSize = 16
+duplicateButton.Font = Enum.Font.GothamBold
+duplicateButton.Parent = titleBar
+
+local duplicateButtonCorner = Instance.new("UICorner")
+duplicateButtonCorner.CornerRadius = UDim.new(0, 6)
+duplicateButtonCorner.Parent = duplicateButton
+
+local closeButton = Instance.new("TextButton")
+closeButton.Name = "CloseButton"
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -35, 0.5, -15)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 85, 85)
+closeButton.BorderSizePixel = 0
+closeButton.Text = "✕"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.TextSize = 14
+closeButton.Font = Enum.Font.GothamBold
+closeButton.Parent = titleBar
+
+local closeButtonCorner = Instance.new("UICorner")
+closeButtonCorner.CornerRadius = UDim.new(0, 6)
+closeButtonCorner.Parent = closeButton
+
+local scrollFrame = Instance.new("ScrollingFrame")
+scrollFrame.Name = "ScrollFrame"
+scrollFrame.Size = UDim2.new(1, -10, 1, -55)
+scrollFrame.Position = UDim2.new(0, 5, 0, 50)
+scrollFrame.BackgroundTransparency = 1
+scrollFrame.BorderSizePixel = 0
+scrollFrame.ScrollBarThickness = 8
+scrollFrame.ScrollBarImageColor3 = Color3.fromRGB(100, 100, 100)
+scrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+scrollFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scrollFrame.Parent = mainFrame
+
+local contentFrame = Instance.new("Frame")
+contentFrame.Name = "ContentFrame"
+contentFrame.Size = UDim2.new(1, -8, 1, 0)
+contentFrame.BackgroundTransparency = 1
+contentFrame.Parent = scrollFrame
+
+local contentLayout = Instance.new("UIListLayout")
+contentLayout.FillDirection = Enum.FillDirection.Vertical
+contentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+contentLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+contentLayout.Padding = UDim.new(0, 2)
+contentLayout.Parent = contentFrame
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Name = "StatusLabel"
+statusLabel.Size = UDim2.new(1, -20, 0, 25)
+statusLabel.Position = UDim2.new(0, 10, 1, -30)
+statusLabel.BackgroundTransparency = 1
+statusLabel.Text = "Select an object to duplicate"
+statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+statusLabel.TextSize = 12
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.TextXAlignment = Enum.TextXAlignment.Left
+statusLabel.Parent = mainFrame
+
+local expandedItems = {}
+local selectedObject = nil
+local selectedButton = nil
+
+local services = {
+    {name = "Workspace", service = game.Workspace, icon = "🌍"},
+    {name = "Players", service = game.Players, icon = "👥"},
+    {name = "ReplicatedStorage", service = game.ReplicatedStorage, icon = "📦"},
+    {name = "ServerStorage", service = game.ServerStorage, icon = "🗄️"},
+    {name = "StarterGui", service = game.StarterGui, icon = "🖥️"},
+    {name = "StarterPack", service = game.StarterPack, icon = "🎒"},
+    {name = "StarterPlayer", service = game.StarterPlayer, icon = "🏃"},
+    {name = "Lighting", service = game.Lighting, icon = "💡"},
+    {name = "SoundService", service = game.SoundService, icon = "🔊"},
+    {name = "TweenService", service = game.TweenService, icon = "🌀"},
+    {name = "UserInputService", service = game.UserInputService, icon = "⌨️"}
 }
 
-local isDragging = false
-local dragStart = nil
-local startPos = nil
-local isMinimized = false
+local function showStatus(message, color)
+    statusLabel.Text = message
+    statusLabel.TextColor3 = color or Color3.fromRGB(180, 180, 180)
+    task.wait(3)
+    statusLabel.Text = "Select an object to duplicate"
+    statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+end
 
--- Get screen size for responsive design
-local viewport = workspace.Camera.ViewportSize
-local isMobile = viewport.X < 768 or GuiService:IsTenFootInterface()
-
--- Calculate responsive sizes (25% smaller than original)
-local function getResponsiveSize()
-    local baseWidth, baseHeight = 285, 360 -- 25% smaller than 380x480
+local function selectObject(obj, button)
+    if selectedButton then
+        selectedButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    end
     
-    if isMobile then
-        -- Mobile: Use most of screen width but limit height
-        local maxWidth = math.min(viewport.X * 0.9, baseWidth)
-        local maxHeight = math.min(viewport.Y * 0.8, baseHeight)
-        return UDim2.new(0, maxWidth, 0, maxHeight)
+    selectedObject = obj
+    selectedButton = button
+    button.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+    
+    statusLabel.Text = "Selected: " .. obj.Name .. " (" .. obj.ClassName .. ")"
+    statusLabel.TextColor3 = Color3.fromRGB(85, 255, 85)
+end
+
+local function getObjectIcon(obj)
+    local className = obj.ClassName
+    if className == "Folder" then return "📁"
+    elseif className == "Model" then return "🏗️"
+    elseif className == "Part" or className == "MeshPart" then return "🧱"
+    elseif className == "Script" then return "📜"
+    elseif className == "LocalScript" then return "📃"
+    elseif className == "ModuleScript" then return "📋"
+    elseif className == "RemoteEvent" then return "📡"
+    elseif className == "RemoteFunction" then return "📞"
+    elseif className == "StringValue" then return "📝"
+    elseif className == "IntValue" then return "🔢"
+    elseif className == "BoolValue" then return "✅"
+    elseif className == "Sound" then return "🎵"
+    elseif className == "Decal" or className == "Texture" then return "🖼️"
+    elseif className == "ScreenGui" or className == "BillboardGui" then return "🖥️"
+    elseif className == "Frame" then return "⬜"
+    elseif className == "TextLabel" or className == "TextButton" then return "📄"
+    elseif className == "ImageLabel" or className == "ImageButton" then return "🖼️"
+    elseif obj:IsA("Camera") then return "📹"
+    elseif obj:IsA("Light") then return "💡"
+    elseif obj:IsA("Humanoid") then return "🤖"
+    else return "📄"
+    end
+end
+
+local function createTreeItem(obj, depth, parent, layoutOrder)
+    local itemFrame = Instance.new("Frame")
+    itemFrame.Name = obj.Name .. "_Item"
+    itemFrame.Size = UDim2.new(1, 0, 0, 35)
+    itemFrame.BackgroundTransparency = 1
+    itemFrame.LayoutOrder = layoutOrder
+    itemFrame.Parent = parent
+    
+    local itemButton = Instance.new("TextButton")
+    itemButton.Name = "ItemButton"
+    itemButton.Size = UDim2.new(1, -5, 1, -2)
+    itemButton.Position = UDim2.new(0, depth * 20, 0, 1)
+    itemButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+    itemButton.BorderSizePixel = 0
+    itemButton.Text = ""
+    itemButton.Parent = itemFrame
+    
+    local itemButtonCorner = Instance.new("UICorner")
+    itemButtonCorner.CornerRadius = UDim.new(0, 4)
+    itemButtonCorner.Parent = itemButton
+    
+    local hasChildren = #obj:GetChildren() > 0
+    local expandButton = Instance.new("TextButton")
+    expandButton.Name = "ExpandButton"
+    expandButton.Size = UDim2.new(0, 20, 0, 20)
+    expandButton.Position = UDim2.new(0, 5, 0.5, -10)
+    expandButton.BackgroundTransparency = 1
+    expandButton.Text = hasChildren and "▶" or ""
+    expandButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+    expandButton.TextSize = 12
+    expandButton.Font = Enum.Font.Gotham
+    expandButton.Parent = itemButton
+    
+    local iconLabel = Instance.new("TextLabel")
+    iconLabel.Name = "IconLabel"
+    iconLabel.Size = UDim2.new(0, 20, 0, 20)
+    iconLabel.Position = UDim2.new(0, 30, 0.5, -10)
+    iconLabel.BackgroundTransparency = 1
+    iconLabel.Text = getObjectIcon(obj)
+    iconLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    iconLabel.TextSize = 14
+    iconLabel.Font = Enum.Font.Gotham
+    iconLabel.Parent = itemButton
+    
+    local nameLabel = Instance.new("TextLabel")
+    nameLabel.Name = "NameLabel"
+    nameLabel.Size = UDim2.new(1, -60, 1, 0)
+    nameLabel.Position = UDim2.new(0, 55, 0, 0)
+    nameLabel.BackgroundTransparency = 1
+    nameLabel.Text = obj.Name
+    nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    nameLabel.TextSize = 13
+    nameLabel.Font = Enum.Font.Gotham
+    nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+    nameLabel.TextTruncate = Enum.TextTruncate.AtEnd
+    nameLabel.Parent = itemButton
+    
+    itemButton.MouseButton1Click:Connect(function()
+        selectObject(obj, itemButton)
+    end)
+    
+    if hasChildren then
+        local childrenContainer = Instance.new("Frame")
+        childrenContainer.Name = "ChildrenContainer"
+        childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+        childrenContainer.BackgroundTransparency = 1
+        childrenContainer.Visible = false
+        childrenContainer.LayoutOrder = layoutOrder + 0.5
+        childrenContainer.Parent = parent
+        
+        local childrenLayout = Instance.new("UIListLayout")
+        childrenLayout.FillDirection = Enum.FillDirection.Vertical
+        childrenLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+        childrenLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+        childrenLayout.SortOrder = Enum.SortOrder.LayoutOrder
+        childrenLayout.Padding = UDim.new(0, 2)
+        childrenLayout.Parent = childrenContainer
+        
+        expandButton.MouseButton1Click:Connect(function()
+            local isExpanded = expandedItems[obj]
+            expandedItems[obj] = not isExpanded
+            
+            if not isExpanded then
+                expandButton.Text = "▼"
+                childrenContainer.Visible = true
+                childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+                
+                for i, child in ipairs(obj:GetChildren()) do
+                    createTreeItem(child, depth + 1, childrenContainer, i)
+                end
+                
+                childrenContainer.AutomaticSize = Enum.AutomaticSize.Y
+            else
+                expandButton.Text = "▶"
+                childrenContainer.Visible = false
+                childrenContainer:ClearAllChildren()
+                childrenLayout.Parent = childrenContainer
+                childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+                childrenContainer.AutomaticSize = Enum.AutomaticSize.None
+            end
+        end)
+    end
+    
+    return itemFrame
+end
+
+local function refreshExplorer()
+    contentFrame:ClearAllChildren()
+    contentLayout.Parent = contentFrame
+    expandedItems = {}
+    selectedObject = nil
+    selectedButton = nil
+    
+    for i, serviceData in ipairs(services) do
+        local success, service = pcall(function()
+            return serviceData.service
+        end)
+        
+        if success and service then
+            local serviceFrame = Instance.new("Frame")
+            serviceFrame.Name = serviceData.name .. "_Service"
+            serviceFrame.Size = UDim2.new(1, 0, 0, 40)
+            serviceFrame.BackgroundTransparency = 1
+            serviceFrame.LayoutOrder = i
+            serviceFrame.Parent = contentFrame
+            
+            local serviceButton = Instance.new("TextButton")
+            serviceButton.Name = "ServiceButton"
+            serviceButton.Size = UDim2.new(1, -5, 1, -2)
+            serviceButton.Position = UDim2.new(0, 0, 0, 1)
+            serviceButton.BackgroundColor3 = Color3.fromRGB(55, 55, 55)
+            serviceButton.BorderSizePixel = 0
+            serviceButton.Text = ""
+            serviceButton.Parent = serviceFrame
+            
+            local serviceButtonCorner = Instance.new("UICorner")
+            serviceButtonCorner.CornerRadius = UDim.new(0, 6)
+            serviceButtonCorner.Parent = serviceButton
+            
+            local hasChildren = #service:GetChildren() > 0
+            local expandButton = Instance.new("TextButton")
+            expandButton.Name = "ExpandButton"
+            expandButton.Size = UDim2.new(0, 25, 0, 25)
+            expandButton.Position = UDim2.new(0, 8, 0.5, -12.5)
+            expandButton.BackgroundTransparency = 1
+            expandButton.Text = hasChildren and "▶" or ""
+            expandButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+            expandButton.TextSize = 14
+            expandButton.Font = Enum.Font.Gotham
+            expandButton.Parent = serviceButton
+            
+            local iconLabel = Instance.new("TextLabel")
+            iconLabel.Name = "IconLabel"
+            iconLabel.Size = UDim2.new(0, 25, 0, 25)
+            iconLabel.Position = UDim2.new(0, 35, 0.5, -12.5)
+            iconLabel.BackgroundTransparency = 1
+            iconLabel.Text = serviceData.icon
+            iconLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            iconLabel.TextSize = 16
+            iconLabel.Font = Enum.Font.Gotham
+            iconLabel.Parent = serviceButton
+            
+            local nameLabel = Instance.new("TextLabel")
+            nameLabel.Name = "NameLabel"
+            nameLabel.Size = UDim2.new(1, -70, 1, 0)
+            nameLabel.Position = UDim2.new(0, 65, 0, 0)
+            nameLabel.BackgroundTransparency = 1
+            nameLabel.Text = serviceData.name
+            nameLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            nameLabel.TextSize = 15
+            nameLabel.Font = Enum.Font.GothamBold
+            nameLabel.TextXAlignment = Enum.TextXAlignment.Left
+            nameLabel.Parent = serviceButton
+            
+            serviceButton.MouseButton1Click:Connect(function()
+                selectObject(service, serviceButton)
+            end)
+            
+            if hasChildren then
+                local childrenContainer = Instance.new("Frame")
+                childrenContainer.Name = "ChildrenContainer"
+                childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+                childrenContainer.BackgroundTransparency = 1
+                childrenContainer.Visible = false
+                childrenContainer.LayoutOrder = i + 0.5
+                childrenContainer.Parent = contentFrame
+                
+                local childrenLayout = Instance.new("UIListLayout")
+                childrenLayout.FillDirection = Enum.FillDirection.Vertical
+                childrenLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+                childrenLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+                childrenLayout.SortOrder = Enum.SortOrder.LayoutOrder
+                childrenLayout.Padding = UDim.new(0, 2)
+                childrenLayout.Parent = childrenContainer
+                
+                expandButton.MouseButton1Click:Connect(function()
+                    local isExpanded = expandedItems[service]
+                    expandedItems[service] = not isExpanded
+                    
+                    if not isExpanded then
+                        expandButton.Text = "▼"
+                        childrenContainer.Visible = true
+                        childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+                        
+                        for j, child in ipairs(service:GetChildren()) do
+                            createTreeItem(child, 1, childrenContainer, j)
+                        end
+                        
+                        childrenContainer.AutomaticSize = Enum.AutomaticSize.Y
+                    else
+                        expandButton.Text = "▶"
+                        childrenContainer.Visible = false
+                        childrenContainer:ClearAllChildren()
+                        childrenLayout.Parent = childrenContainer
+                        childrenContainer.Size = UDim2.new(1, 0, 0, 0)
+                        childrenContainer.AutomaticSize = Enum.AutomaticSize.None
+                    end
+                end)
+            end
+        end
+    end
+end
+
+local function toggleExplorer()
+    print("Toggle Explorer clicked!")
+    local targetVisible = not mainFrame.Visible
+    print("Target visible:", targetVisible)
+    
+    if targetVisible then
+        mainFrame.Visible = true
+        mainFrame.Size = UDim2.new(0, 50, 0, 600)
+        mainFrame.Position = UDim2.new(0, 15, 0.1, 0)
+        
+        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out)
+        local tween = TweenService:Create(mainFrame, tweenInfo, {
+            Size = UDim2.new(0, 350, 0, 600)
+        })
+        tween:Play()
+        
+        if #contentFrame:GetChildren() <= 1 then
+            refreshExplorer()
+        end
     else
-        -- Desktop: Use fixed size
-        return UDim2.new(0, baseWidth, 0, baseHeight)
+        local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.In)
+        local tween = TweenService:Create(mainFrame, tweenInfo, {
+            Size = UDim2.new(0, 50, 0, 600)
+        })
+        tween:Play()
+        tween.Completed:Connect(function()
+            mainFrame.Visible = false
+        end)
     end
 end
 
-local function CreateMainUI()
-    local screenGui = Instance.new("ScreenGui")
-    screenGui.Name = "CustomizationGUI"
-    screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    screenGui.ResetOnSpawn = false
-    screenGui.Parent = CoreGui
+explorerButton.MouseButton1Click:Connect(function()
+    print("Explorer button clicked!")
+    toggleExplorer()
+end)
+closeButton.MouseButton1Click:Connect(function()
+    print("Close button clicked!")
+    toggleExplorer()
+end)
 
-    -- Main container with better styling
-    local mainFrame = Instance.new("Frame")
-    mainFrame.Name = "MainFrame"
-    mainFrame.Size = getResponsiveSize()
-    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
-    mainFrame.BackgroundColor3 = THEME.Background
-    mainFrame.BorderSizePixel = 0
-    mainFrame.Parent = screenGui
-    
-    -- Add drop shadow effect
-    local shadow = Instance.new("ImageLabel")
-    shadow.Name = "Shadow"
-    shadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    shadow.Size = UDim2.new(1, 30, 1, 30)
-    shadow.BackgroundTransparency = 1
-    shadow.Image = "rbxasset://textures/ui/GuiImagePlaceholder.png"
-    shadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    shadow.ImageTransparency = 0.7
-    shadow.ZIndex = mainFrame.ZIndex - 1
-    shadow.Parent = screenGui
-    
-    local mainCorner = Instance.new("UICorner")
-    mainCorner.CornerRadius = UDim.new(0, 16)
-    mainCorner.Parent = mainFrame
-    
-    local shadowCorner = Instance.new("UICorner")
-    shadowCorner.CornerRadius = UDim.new(0, 20)
-    shadowCorner.Parent = shadow
-    
-    -- Modern header with gradient
-    local header = Instance.new("Frame")
-    header.Name = "Header"
-    header.Size = UDim2.new(1, 0, 0, 50)
-    header.BackgroundColor3 = THEME.Surface
-    header.BorderSizePixel = 0
-    header.Parent = mainFrame
-    
-    local headerCorner = Instance.new("UICorner")
-    headerCorner.CornerRadius = UDim.new(0, 16)
-    headerCorner.Parent = header
-    
-    -- Add subtle gradient to header
-    local headerGradient = Instance.new("UIGradient")
-    headerGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, THEME.Surface),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(45, 46, 62))
-    }
-    headerGradient.Rotation = 90
-    headerGradient.Parent = header
-    
-    -- Hide bottom corners of header
-    local headerMask = Instance.new("Frame")
-    headerMask.Size = UDim2.new(1, 0, 0, 16)
-    headerMask.Position = UDim2.new(0, 0, 1, -16)
-    headerMask.BackgroundColor3 = THEME.Surface
-    headerMask.BorderSizePixel = 0
-    headerMask.Parent = header
-    
-    -- Modern title with icon
-    local titleContainer = Instance.new("Frame")
-    titleContainer.Size = UDim2.new(1, -120, 1, 0)
-    titleContainer.Position = UDim2.new(0, 20, 0, 0)
-    titleContainer.BackgroundTransparency = 1
-    titleContainer.Parent = header
-    
-    local icon = Instance.new("TextLabel")
-    icon.Size = UDim2.new(0, 24, 0, 24)
-    icon.Position = UDim2.new(0, 0, 0.5, 0)
-    icon.AnchorPoint = Vector2.new(0, 0.5)
-    icon.BackgroundTransparency = 1
-    icon.Text = "🎨"
-    icon.TextSize = 20
-    icon.Parent = titleContainer
-    
-    local title = Instance.new("TextLabel")
-    title.Size = UDim2.new(1, -30, 1, 0)
-    title.Position = UDim2.new(0, 30, 0, 0)
-    title.BackgroundTransparency = 1
-    title.Text = "Character Studio"
-    title.Font = Enum.Font.GothamBold
-    title.TextColor3 = THEME.Text
-    title.TextSize = isMobile and 16 or 18
-    title.TextXAlignment = Enum.TextXAlignment.Left
-    title.TextYAlignment = Enum.TextYAlignment.Center
-    title.Parent = titleContainer
-    
-    -- Modern control buttons
-    local controlsContainer = Instance.new("Frame")
-    controlsContainer.Size = UDim2.new(0, 80, 0, 30)
-    controlsContainer.Position = UDim2.new(1, -20, 0.5, 0)
-    controlsContainer.AnchorPoint = Vector2.new(1, 0.5)
-    controlsContainer.BackgroundTransparency = 1
-    controlsContainer.Parent = header
-    
-    local controlLayout = Instance.new("UIListLayout")
-    controlLayout.FillDirection = Enum.FillDirection.Horizontal
-    controlLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-    controlLayout.Padding = UDim.new(0, 8)
-    controlLayout.Parent = controlsContainer
-    
-    local function createControlButton(text, color, hoverColor)
-        local btn = Instance.new("TextButton")
-        btn.Size = UDim2.new(0, 30, 0, 30)
-        btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        btn.BackgroundTransparency = 0.8
-        btn.BorderSizePixel = 0
-        btn.Text = text
-        btn.Font = Enum.Font.GothamBold
-        btn.TextColor3 = color
-        btn.TextSize = 14
-        btn.Parent = controlsContainer
-        
-        local btnCorner = Instance.new("UICorner")
-        btnCorner.CornerRadius = UDim.new(0, 8)
-        btnCorner.Parent = btn
-        
-        -- Hover effects
-        btn.MouseEnter:Connect(function()
-            TweenService:Create(btn, TweenInfo.new(0.2), {
-                BackgroundTransparency = 0.6,
-                TextColor3 = hoverColor
-            }):Play()
+duplicateButton.MouseButton1Click:Connect(function()
+    if not selectedObject then
+        spawn(function()
+            showStatus("No object selected!", Color3.fromRGB(255, 85, 85))
         end)
-        
-        btn.MouseLeave:Connect(function()
-            TweenService:Create(btn, TweenInfo.new(0.2), {
-                BackgroundTransparency = 0.8,
-                TextColor3 = color
-            }):Play()
-        end)
-        
-        return btn
+        return
     end
     
-    local minimizeBtn = createControlButton("−", THEME.Warning, Color3.fromRGB(255, 200, 100))
-    local closeBtn = createControlButton("×", THEME.Error, Color3.fromRGB(255, 120, 120))
-
-    -- Modern content area with better scrolling
-    local contentFrame = Instance.new("ScrollingFrame")
-    contentFrame.Name = "ContentFrame"
-    contentFrame.Size = UDim2.new(1, -20, 1, -70)
-    contentFrame.Position = UDim2.new(0, 10, 0, 60)
-    contentFrame.BackgroundTransparency = 1
-    contentFrame.BorderSizePixel = 0
-    contentFrame.ScrollBarThickness = 4
-    contentFrame.ScrollBarImageColor3 = THEME.Primary
-    contentFrame.ScrollingDirection = Enum.ScrollingDirection.Y
-    contentFrame.VerticalScrollBarInset = Enum.ScrollBarInset.ScrollBar
-    contentFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
-    contentFrame.Parent = mainFrame
-    
-    local listLayout = Instance.new("UIListLayout")
-    listLayout.Padding = UDim.new(0, 15)
-    listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    listLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-    listLayout.Parent = contentFrame
-    
-    -- Auto-resize canvas
-    listLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-        contentFrame.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y + 20)
-    end)
-
-    local skinColor = Color3.fromRGB(224, 177, 134)
-    local eyeColor = Color3.fromRGB(50, 150, 255)
-
-    local function createModernColorPicker(parent, titleText, iconText, defaultColor, callback)
-        local sectionFrame = Instance.new("Frame")
-        sectionFrame.Size = UDim2.new(1, 0, 0, 180)
-        sectionFrame.BackgroundColor3 = THEME.Surface
-        sectionFrame.BorderSizePixel = 0
-        sectionFrame.Parent = parent
-        
-        local sectionCorner = Instance.new("UICorner")
-        sectionCorner.CornerRadius = UDim.new(0, 12)
-        sectionCorner.Parent = sectionFrame
-        
-        -- Section header
-        local headerSection = Instance.new("Frame")
-        headerSection.Size = UDim2.new(1, -20, 0, 40)
-        headerSection.Position = UDim2.new(0, 10, 0, 10)
-        headerSection.BackgroundTransparency = 1
-        headerSection.Parent = sectionFrame
-        
-        local sectionIcon = Instance.new("TextLabel")
-        sectionIcon.Size = UDim2.new(0, 24, 0, 24)
-        sectionIcon.Position = UDim2.new(0, 0, 0.5, 0)
-        sectionIcon.AnchorPoint = Vector2.new(0, 0.5)
-        sectionIcon.BackgroundTransparency = 1
-        sectionIcon.Text = iconText
-        sectionIcon.TextSize = 18
-        sectionIcon.Parent = headerSection
-
-        local sectionTitle = Instance.new("TextLabel")
-        sectionTitle.Size = UDim2.new(1, -100, 1, 0)
-        sectionTitle.Position = UDim2.new(0, 30, 0, 0)
-        sectionTitle.BackgroundTransparency = 1
-        sectionTitle.Text = titleText
-        sectionTitle.Font = Enum.Font.GothamBold
-        sectionTitle.TextColor3 = THEME.Text
-        sectionTitle.TextSize = isMobile and 14 or 16
-        sectionTitle.TextXAlignment = Enum.TextXAlignment.Left
-        sectionTitle.TextYAlignment = Enum.TextYAlignment.Center
-        sectionTitle.Parent = headerSection
-        
-        -- Color preview with better styling
-        local previewContainer = Instance.new("Frame")
-        previewContainer.Size = UDim2.new(0, 60, 0, 30)
-        previewContainer.Position = UDim2.new(1, 0, 0.5, 0)
-        previewContainer.AnchorPoint = Vector2.new(1, 0.5)
-        previewContainer.BackgroundColor3 = THEME.Border
-        previewContainer.BorderSizePixel = 0
-        previewContainer.Parent = headerSection
-        
-        local previewCorner = Instance.new("UICorner")
-        previewCorner.CornerRadius = UDim.new(0, 8)
-        previewCorner.Parent = previewContainer
-        
-        local preview = Instance.new("Frame")
-        preview.Size = UDim2.new(1, -4, 1, -4)
-        preview.Position = UDim2.new(0, 2, 0, 2)
-        preview.BackgroundColor3 = defaultColor
-        preview.BorderSizePixel = 0
-        preview.Parent = previewContainer
-        
-        local innerPreviewCorner = Instance.new("UICorner")
-        innerPreviewCorner.CornerRadius = UDim.new(0, 6)
-        innerPreviewCorner.Parent = preview
-        
-        local currentColor = {defaultColor.R * 255, defaultColor.G * 255, defaultColor.B * 255}
-        
-        -- RGB sliders container
-        local slidersContainer = Instance.new("Frame")
-        slidersContainer.Size = UDim2.new(1, -20, 0, 120)
-        slidersContainer.Position = UDim2.new(0, 10, 0, 50)
-        slidersContainer.BackgroundTransparency = 1
-        slidersContainer.Parent = sectionFrame
-        
-        local slidersLayout = Instance.new("UIListLayout")
-        slidersLayout.Padding = UDim.new(0, 12)
-        slidersLayout.Parent = slidersContainer
-        
-        for i, channel in ipairs({"R", "G", "B"}) do
-            local sliderContainer = Instance.new("Frame")
-            sliderContainer.Size = UDim2.new(1, 0, 0, 30)
-            sliderContainer.BackgroundTransparency = 1
-            sliderContainer.Parent = slidersContainer
-            
-            -- Channel label
-            local label = Instance.new("TextLabel")
-            label.Size = UDim2.new(0, 20, 1, 0)
-            label.BackgroundTransparency = 1
-            label.Text = channel
-            label.Font = Enum.Font.GothamBold
-            label.TextColor3 = THEME.TextSecondary
-            label.TextSize = isMobile and 12 or 14
-            label.TextXAlignment = Enum.TextXAlignment.Center
-            label.Parent = sliderContainer
-            
-            -- Slider track
-            local sliderBg = Instance.new("Frame")
-            sliderBg.Size = UDim2.new(1, -80, 0, 18)
-            sliderBg.Position = UDim2.new(0, 25, 0.5, 0)
-            sliderBg.AnchorPoint = Vector2.new(0, 0.5)
-            sliderBg.BackgroundColor3 = Color3.fromRGB(30, 31, 47)
-            sliderBg.BorderSizePixel = 0
-            sliderBg.Parent = sliderContainer
-            
-            local sliderCorner = Instance.new("UICorner")
-            sliderCorner.CornerRadius = UDim.new(0, 9)
-            sliderCorner.Parent = sliderBg
-            
-            -- Slider fill with channel color
-            local channelColors = {
-                Color3.fromRGB(239, 68, 68),   -- Red
-                Color3.fromRGB(34, 197, 94),   -- Green  
-                Color3.fromRGB(59, 130, 246)   -- Blue
-            }
-            
-            local sliderFill = Instance.new("Frame")
-            sliderFill.BackgroundColor3 = channelColors[i]
-            sliderFill.Size = UDim2.new(currentColor[i] / 255, 0, 1, 0)
-            sliderFill.BorderSizePixel = 0
-            sliderFill.Parent = sliderBg
-            
-            local fillCorner = Instance.new("UICorner")
-            fillCorner.CornerRadius = UDim.new(0, 9)
-            fillCorner.Parent = sliderFill
-
-            -- Modern input box
-            local inputBox = Instance.new("TextBox")
-            inputBox.Size = UDim2.new(0, 45, 0, 24)
-            inputBox.Position = UDim2.new(1, -50, 0.5, 0)
-            inputBox.AnchorPoint = Vector2.new(0, 0.5)
-            inputBox.BackgroundColor3 = Color3.fromRGB(30, 31, 47)
-            inputBox.BorderSizePixel = 0
-            inputBox.Font = Enum.Font.Gotham
-            inputBox.TextColor3 = THEME.Text
-            inputBox.Text = tostring(math.floor(currentColor[i]))
-            inputBox.TextSize = isMobile and 11 or 12
-            inputBox.TextXAlignment = Enum.TextXAlignment.Center
-            inputBox.Parent = sliderContainer
-            
-            local inputCorner = Instance.new("UICorner")
-            inputCorner.CornerRadius = UDim.new(0, 6)
-            inputCorner.Parent = inputBox
-            
-            local isSliding = false
-            
-            local function updateColor()
-                local newColor = Color3.fromRGB(unpack(currentColor))
-                preview.BackgroundColor3 = newColor
-                callback(newColor)
-            end
-
-            -- Input validation with better UX
-            inputBox.FocusLost:Connect(function()
-                local value = tonumber(inputBox.Text)
-                if value then
-                    value = math.clamp(value, 0, 255)
-                    currentColor[i] = value
-                    inputBox.Text = tostring(math.floor(value))
-                    
-                    TweenService:Create(sliderFill, TweenInfo.new(0.2), {
-                        Size = UDim2.new(value / 255, 0, 1, 0)
-                    }):Play()
-                    updateColor()
-                else
-                    inputBox.Text = tostring(math.floor(currentColor[i]))
-                end
-            end)
-            
-            -- Smooth slider interaction
-            local function updateFromSlider(input)
-                local relativeX = input.Position.X - sliderBg.AbsolutePosition.X
-                local percentage = math.clamp(relativeX / sliderBg.AbsoluteSize.X, 0, 1)
-                local value = math.floor(percentage * 255)
-                
-                currentColor[i] = value
-                inputBox.Text = tostring(value)
-                sliderFill.Size = UDim2.new(percentage, 0, 1, 0)
-                updateColor()
-            end
-
-            sliderBg.InputBegan:Connect(function(input)
-                if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                    isSliding = true
-                    updateFromSlider(input)
-                    
-                    TweenService:Create(sliderBg, TweenInfo.new(0.1), {
-                        Size = UDim2.new(1, -80, 0, 20)
-                    }):Play()
-                end
-            end)
-            
-            local inputChangedConn
-            inputChangedConn = UserInputService.InputChanged:Connect(function(input)
-                if isSliding and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-                    updateFromSlider(input)
-                end
-            end)
-
-            local inputEndedConn
-            inputEndedConn = UserInputService.InputEnded:Connect(function(input)
-                if isSliding and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-                    isSliding = false
-                    TweenService:Create(sliderBg, TweenInfo.new(0.1), {
-                        Size = UDim2.new(1, -80, 0, 18)
-                    }):Play()
-                end
-            end)
-
-            sectionFrame.Destroying:Connect(function()
-                if inputChangedConn then inputChangedConn:Disconnect() end
-                if inputEndedConn then inputEndedConn:Disconnect() end
-            end)
-        end
-        
-        return sectionFrame
-    end
-    
-    -- Create modern color pickers
-    createModernColorPicker(contentFrame, "Skin Tone", "👤", skinColor, function(color)
-        skinColor = color
-        ApplyPlayerTexture:FireServer("Pattern1", color)
+    local success, err = pcall(function()
+        local EnableStatisticsGui = ReplicatedStorage.BillboardGui.EnableStatisticsGui
+        EnableStatisticsGui:FireServer(selectedObject)
     end)
     
-    createModernColorPicker(contentFrame, "Eye Color", "👁️", eyeColor, function(color)
-        eyeColor = color
-        ColourEventEyes2:FireServer(color)
-    end)
-    
-    -- Enhanced dragging system with mobile support
-    local function setupDragging()
-        local dragConnections = {}
-        
-        header.InputBegan:Connect(function(input)
-            if isMinimized then return end
-            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-                isDragging = true
-                dragStart = input.Position
-                startPos = mainFrame.Position
-                
-                -- Visual feedback
-                TweenService:Create(mainFrame, TweenInfo.new(0.1), {
-                    Size = mainFrame.Size + UDim2.new(0, 4, 0, 4)
-                }):Play()
-                TweenService:Create(shadow, TweenInfo.new(0.1), {
-                    Size = shadow.Size + UDim2.new(0, 10, 0, 10),
-                    ImageTransparency = 0.5
-                }):Play()
-            end
+    if success then
+        spawn(function()
+            showStatus("Duplicated: " .. selectedObject.Name, Color3.fromRGB(85, 255, 85))
         end)
-        
-        dragConnections[#dragConnections + 1] = UserInputService.InputChanged:Connect(function(input)
-            if isDragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-                local delta = input.Position - dragStart
-                local newPos = startPos + UDim2.new(0, delta.X, 0, delta.Y)
-                
-                -- Keep UI on screen
-                local screenSize = viewport
-                local frameSize = mainFrame.AbsoluteSize
-                
-                local minX = frameSize.X * -0.3
-                local maxX = screenSize.X - frameSize.X * 0.7
-                local minY = 0
-                local maxY = screenSize.Y - frameSize.Y
-                
-                local clampedX = math.clamp(newPos.X.Offset, minX, maxX)
-                local clampedY = math.clamp(newPos.Y.Offset, minY, maxY)
-                
-                mainFrame.Position = UDim2.new(newPos.X.Scale, clampedX, newPos.Y.Scale, clampedY)
-                shadow.Position = mainFrame.Position
-            end
-        end)
-        
-        dragConnections[#dragConnections + 1] = UserInputService.InputEnded:Connect(function(input)
-            if isDragging and (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-                isDragging = false
-                
-                -- Reset visual feedback
-                TweenService:Create(mainFrame, TweenInfo.new(0.2, Enum.EasingStyle.Back), {
-                    Size = mainFrame.Size - UDim2.new(0, 4, 0, 4)
-                }):Play()
-                TweenService:Create(shadow, TweenInfo.new(0.2), {
-                    Size = shadow.Size - UDim2.new(0, 10, 0, 10),
-                    ImageTransparency = 0.7
-                }):Play()
-            end
-        end)
-        
-        -- Cleanup on destroy
-        screenGui.Destroying:Connect(function()
-            for _, conn in ipairs(dragConnections) do
-                conn:Disconnect()
-            end
+    else
+        spawn(function()
+            showStatus("Failed to duplicate: " .. tostring(err), Color3.fromRGB(255, 85, 85))
         end)
     end
-    
-    setupDragging()
-    
-    -- Modern minimize animation
-    minimizeBtn.MouseButton1Click:Connect(function()
-        isMinimized = not isMinimized
-        
-        local targetSize = isMinimized and UDim2.new(0, mainFrame.Size.X.Offset, 0, 50) or getResponsiveSize()
-        local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Quart, Enum.EasingDirection.Out)
-        
-        TweenService:Create(mainFrame, tweenInfo, {Size = targetSize}):Play()
-        TweenService:Create(shadow, tweenInfo, {Size = targetSize + UDim2.new(0, 30, 0, 30)}):Play()
-        
-        if isMinimized then
-            TweenService:Create(contentFrame, TweenInfo.new(0.2), {GroupTransparency = 1}):Play()
-            wait(0.2)
-            contentFrame.Visible = false
-        else
-            contentFrame.Visible = true
-            TweenService:Create(contentFrame, TweenInfo.new(0.3, Enum.EasingStyle.Back), {GroupTransparency = 0}):Play()
-        end
-        
-        minimizeBtn.Text = isMinimized and "□" or "−"
-    end)
-    
-    -- Smooth close animation
-    closeBtn.MouseButton1Click:Connect(function()
-        local tweenInfo = TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In)
-        
-        TweenService:Create(mainFrame, tweenInfo, {
-            Size = UDim2.new(0, 0, 0, 0),
-            BackgroundTransparency = 1
-        }):Play()
-        
-        TweenService:Create(shadow, tweenInfo, {
-            Size = UDim2.new(0, 0, 0, 0),
-            ImageTransparency = 1
-        }):Play()
-        
-        -- Fade out all content
-        for _, child in ipairs(mainFrame:GetDescendants()) do
-            if child:IsA("GuiObject") and child ~= mainFrame then
-                TweenService:Create(child, tweenInfo, {
-                    BackgroundTransparency = 1,
-                    TextTransparency = 1,
-                    ImageTransparency = 1
-                }):Play()
-            end
-        end
-        
-        wait(0.4)
-        screenGui:Destroy()
-    end)
-    
-    -- Initialize with current colors
-    ApplyPlayerTexture:FireServer("Pattern1", skinColor)
-    ColourEventEyes2:FireServer(eyeColor)
-    
-    -- Smooth entrance animation
-    mainFrame.Size = UDim2.new(0, 0, 0, 0)
-    mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
-    shadow.Size = UDim2.new(0, 0, 0, 0)
-    shadow.Position = UDim2.new(0.5, 0, 0.5, 0)
-    
-    TweenService:Create(mainFrame, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = getResponsiveSize()
-    }):Play()
-    
-    TweenService:Create(shadow, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-        Size = getResponsiveSize() + UDim2.new(0, 30, 0, 30)
-    }):Play()
-    
-    -- Handle screen rotation/resize on mobile
-    workspace.Camera:GetPropertyChangedSignal("ViewportSize"):Connect(function()
-        if isMobile then
-            local newSize = getResponsiveSize()
-            TweenService:Create(mainFrame, TweenInfo.new(0.3), {Size = newSize}):Play()
-            TweenService:Create(shadow, TweenInfo.new(0.3), {Size = newSize + UDim2.new(0, 30, 0, 30)}):Play()
-        end
-    end)
-end
+end)
 
-CreateMainUI()
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Escape and mainFrame.Visible then
+        toggleExplorer()
+    end
+end)
